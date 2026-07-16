@@ -1,0 +1,136 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: shopkart
+          MYSQL_USER: shopkart
+          MYSQL_PASSWORD: shopkart
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      # Checkout Playwright repo
+      - name: Checkout Playwright Repo
+        uses: actions/checkout@v4
+
+      # Checkout ShopKart repo
+      - name: Checkout ShopKart App
+        uses: actions/checkout@v4
+        with:
+          repository: jaisingh-builds/sdet-retail-app
+          ref: shopkart
+          path: sdet-retail-app
+
+      # Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Install Playwright dependencies
+      - name: Install Playwright Dependencies
+        working-directory: ./PlaywrightTests
+        run: npm install
+
+      # Install ShopKart root dependencies
+      - name: Install ShopKart Root Dependencies
+        working-directory: ./sdet-retail-app
+        run: npm install
+
+      # Install Frontend Dependencies
+      - name: Install Frontend Dependencies
+        working-directory: ./sdet-retail-app/frontend
+        run: npm install
+
+      # Install Backend Dependencies
+      - name: Install Backend Dependencies
+        working-directory: ./sdet-retail-app/backend
+        run: npm install
+
+      # Create ShopKart .env
+      - name: Create ShopKart .env
+        working-directory: ./sdet-retail-app
+        run: |
+          cp .env.example .env
+
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_NAME=shopkart" >> .env
+          echo "DB_USER=shopkart" >> .env
+          echo "DB_PASSWORD=shopkart" >> .env
+          echo "SHOPKART_ALICE_PASSWORD=${{ secrets.SHOPKART_ALICE_PASSWORD }}" >> .env
+          echo "SHOPKART_BOB_PASSWORD=${{ secrets.SHOPKART_BOB_PASSWORD }}" >> .env
+          echo "SHOPKART_CAROL_PASSWORD=${{ secrets.SHOPKART_CAROL_PASSWORD }}" >> .env
+
+      # Create Playwright .env
+      - name: Create Playwright .env
+        working-directory: ./PlaywrightTests
+        run: |
+          cp .env.example .env
+
+          echo "BASEURL=http://localhost:8080" >> .env
+          echo "SHOPKART_ALICE_PASSWORD=${{ secrets.SHOPKART_CAROL_PASSWORD }}" >> .env
+
+      # Verify MySQL Connection
+      - name: Verify MySQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+          mysql -h 127.0.0.1 -u shopkart -pshopkart -e "SHOW DATABASES;"
+
+      # Verify Vite installation
+      - name: Verify Vite
+        working-directory: ./sdet-retail-app/frontend
+        run: npx vite --version
+
+      # Start ShopKart
+      - name: Start ShopKart
+        working-directory: ./sdet-retail-app
+        run: |
+          chmod +x scripts/shopkart-start.sh
+          ./scripts/shopkart-start.sh > app.log 2>&1 &
+          sleep 30
+          cat app.log
+
+      # Wait until application is up
+      - name: Wait for ShopKart
+        working-directory: ./PlaywrightTests
+        run: npx wait-on http://localhost:8080 --timeout 180000
+
+      # Install Playwright Browsers
+      - name: Install Playwright Browsers
+        working-directory: ./PlaywrightTests
+        run: npx playwright install --with-deps
+
+      # Run Playwright Tests
+      - name: Run Playwright Tests
+        working-directory: ./PlaywrightTests
+        run: npx playwright test
+
+      # Upload Playwright Report
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: PlaywrightTests/playwright-report/
+          retention-days: 30
