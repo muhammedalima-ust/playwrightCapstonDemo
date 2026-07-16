@@ -20,7 +20,15 @@ test.describe("End to end flow of the app",()=>{
 
       await search.login(Util.emailName(testUsers.user.name),Secrets.get(`SHOPKART_${testUsers.user.name}_PASSWORD`));
       log.info("Login sucessfully for the user",{username:Util.emailName(testUsers.user.name),password:Secrets.get(`SHOPKART_${testUsers.user.name}_PASSWORD`)})
-      evidence.userName = Util.emailName(testUsers.user.name);
+      evidence["user-details"] = {
+                                  username: "alice",
+                                  status: "logged-in",
+                                };  
+      evidence["loginnned-screenshot"] = await page.screenshot({
+            path: "Report/screenshot/logged/loginpage.png",
+            mask:[
+                page.getByLabel('password'),
+            ]}); 
       
       await search.search(testProduct.product1.name);
       log.info("Search for lamp");
