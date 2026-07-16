@@ -1,0 +1,51 @@
+
+
+# Node modules
+node_modules/
+
+# Playwright reports
+playwright-report/
+test-results/
+blob-report/
+
+# Playwright traces, screenshots, videos
+test-results/
+*.png
+*.webm
+*.zip
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+
+# Build output
+dist/
+build/
+
+# Temporary files
+tmp/
+temp/
+
+# Cache
+.cache/
+
+secrets.local.properties
