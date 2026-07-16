@@ -85,10 +85,9 @@ jobs:
       - name: Create Playwright .env
         working-directory: ./PlaywrightTests
         run: |
-          cp .env.example .env
-
-          echo "BASEURL=http://localhost:8080" >> .env
-          echo "SHOPKART_ALICE_PASSWORD=${{ secrets.SHOPKART_CAROL_PASSWORD }}" >> .env
+         touch .env
+         echo "BASEURL=http://localhost:8080" >> .env
+         echo "SHOPKART_ALICE_PASSWORD=${{ secrets.SHOPKART_ALICE_PASSWORD }}" >> .env
 
       # Verify MySQL Connection
       - name: Verify MySQL
