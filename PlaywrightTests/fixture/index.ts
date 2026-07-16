@@ -1,6 +1,6 @@
 import {test as base} from './EvidenceFixture'
 import { SearchFlow } from '../flow/SearchFlow'
-import { Util } from '../src/utils/Util';
+import { Util } from '../src/utils/util';
 
 type Fixtures={
     search:SearchFlow,

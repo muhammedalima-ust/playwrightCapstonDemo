@@ -19,7 +19,7 @@ public class CustomerBuilder {
 
     public Customer build(){
         String email = name + "@shopkart.test";
-        String password = Secrets.get(name + ".password");
+        String password = Secrets.get("SHOPKART_"+name + "_PASSWORD");
         return new Customer(name,email,password);
     }
 

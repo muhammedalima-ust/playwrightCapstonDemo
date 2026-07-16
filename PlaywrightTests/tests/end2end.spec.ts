@@ -1,7 +1,7 @@
 import { testProduct } from '../data/testProduct';
 import { test, expect } from '../fixture/index';
 import { testUsers } from '../data/testUser';
-import { Util } from '../src/utils/Util';
+import { Util } from '../src/utils/util';
 import { Secrets } from '../src/utils/secrets';
 
 test.describe("End to end flow of the app",()=>{
