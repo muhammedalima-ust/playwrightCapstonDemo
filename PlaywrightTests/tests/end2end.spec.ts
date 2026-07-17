@@ -1,8 +1,8 @@
 import { testProduct } from '../data/testProduct';
 import { test, expect } from '../fixture/index';
 import { testUsers } from '../data/testUser';
-import { Util } from '../src/utils/util';
-import { Secrets } from '../src/utils/secrets';
+import { util } from '../src/utils/util';
+import { secrets } from '../src/utils/secrets';
 
 test.describe("End to end flow of the app",()=>{
     test("End to end flow",async ({search,log,evidence,page},testInfo)=>{
@@ -18,8 +18,8 @@ test.describe("End to end flow of the app",()=>{
       await expect(page).toHaveURL("/login");
       log.info("Login page url verified");
 
-      await search.login(Util.emailName(testUsers.user.name),Secrets.get(`SHOPKART_${testUsers.user.name}_PASSWORD`));
-      log.info("Login sucessfully for the user",{username:Util.emailName(testUsers.user.name),password:Secrets.get(`SHOPKART_${testUsers.user.name}_PASSWORD`)})
+      await search.login(util.emailName(testUsers.user.name),secrets.get(`SHOPKART_${testUsers.user.name}_PASSWORD`));
+      log.info("Login sucessfully for the user",{username:util.emailName(testUsers.user.name),password:secrets.get(`SHOPKART_${testUsers.user.name}_PASSWORD`)})
       evidence["user-details"] = {
                                   username: "alice",
                                   status: "logged-in",

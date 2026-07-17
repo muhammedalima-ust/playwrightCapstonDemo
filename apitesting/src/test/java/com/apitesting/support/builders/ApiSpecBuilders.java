@@ -1,4 +1,4 @@
-package com.apitesting.support;
+package com.apitesting.support.builders;
 
 import com.apitesting.config.Config;
 

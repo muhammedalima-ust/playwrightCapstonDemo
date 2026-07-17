@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 
-export class Util {
+export class util {
     constructor(private readonly page:Page){};
     
     static emailName(name: string): string {

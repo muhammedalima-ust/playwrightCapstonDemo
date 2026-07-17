@@ -1,3 +1,5 @@
+package com.apitesting.data.secrets;
+
 import io.github.cdimascio.dotenv.Dotenv;
 
 public final class Secrets {

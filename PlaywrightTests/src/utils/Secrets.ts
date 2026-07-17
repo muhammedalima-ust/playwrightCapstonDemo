@@ -2,7 +2,7 @@ import dotenv from "dotenv";
  
 dotenv.config();
  
-export class Secrets {
+export class secrets {
   static get(key: string): string {
     const value =
       process.env[key.toUpperCase()] ??

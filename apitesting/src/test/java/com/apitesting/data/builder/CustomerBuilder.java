@@ -1,8 +1,8 @@
 package com.apitesting.data.builder;
 
-import com.apitesting.api.AuthClient;
-import com.apitesting.data.models.Customer;
-import com.apitesting.data.secrets.Secrets;
+import com.apitesting.client.AuthClient;
+import com.apitesting.data.model.Customer;
+import com.apitesting.data.secrets.*;
 
 /** Get the customer details and return the token */
 public class CustomerBuilder {

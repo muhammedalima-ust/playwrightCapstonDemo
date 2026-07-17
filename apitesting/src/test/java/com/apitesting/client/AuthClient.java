@@ -1,9 +1,8 @@
 package com.apitesting.client;
 
-import com.apitesting.config.Config;
-import com.apitesting.support.ApiSpecBuilders;
+import com.apitesting.support.builders.ApiSpecBuilders;
 import io.restassured.response.Response;
-
+import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class AuthClient {
