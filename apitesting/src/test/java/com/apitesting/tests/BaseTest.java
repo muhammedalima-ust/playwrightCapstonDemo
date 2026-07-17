@@ -42,11 +42,6 @@ public class BaseTest {
         Report.pass("API test setup completed");
     }
 
-    protected String getAuthToken() {
-        System.out.println(authToken);
-        return authToken;
-    }
-
     @Test
     public void searchProduct(){
        Response product= productClient.search("Bag");
