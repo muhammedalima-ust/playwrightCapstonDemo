@@ -177,6 +177,14 @@ jobs:
       - name: Grant Gradle Execute Permission
         working-directory: ./apitesting
         run: chmod +x gradlew
+      
+      # Create Playwright Environment File
+      - name: Create Playwright .env
+        working-directory: ./apitesting
+        run: |
+          touch .env
+          echo "BASEURL=http://localhost:8080" >> .env
+          echo "SHOPKART_ALICE_PASSWORD=${{ secrets.SHOPKART_ALICE_PASSWORD }}" >> .env
 
 
       # ============================================================
