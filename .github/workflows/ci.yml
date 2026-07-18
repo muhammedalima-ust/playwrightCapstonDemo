@@ -126,13 +126,13 @@ jobs:
           echo "---- end raw response ----"
 
       - name: Run all API tests
-        env:
-          MUHAMMED_APIBASEURL: ${{ secrets.MUHAMMED_APIBASEURL }}
-          MUHAMMED_EMP_ID: ${{ secrets.MUHAMMED_EMP_ID }}
-          MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
-          MUHAMMED_DB_USERNAME: ${{ secrets.MUHAMMED_DB_USERNAME }}
-          MUHAMMED_DB_PASSWORD: ${{ secrets.MUHAMMED_DB_PASSWORD }}
-          MUHAMMED_DAVE_PASSWORD: ${{ secrets.MUHAMMED_DAVE_PASSWORD }}
+        # env:
+        #   MUHAMMED_APIBASEURL: ${{ secrets.MUHAMMED_APIBASEURL }}
+        #   MUHAMMED_EMP_ID: ${{ secrets.MUHAMMED_EMP_ID }}
+        #   MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
+        #   MUHAMMED_DB_USERNAME: ${{ secrets.MUHAMMED_DB_USERNAME }}
+        #   MUHAMMED_DB_PASSWORD: ${{ secrets.MUHAMMED_DB_PASSWORD }}
+        #   MUHAMMED_DAVE_PASSWORD: ${{ secrets.MUHAMMED_DAVE_PASSWORD }}
         run: ./gradlew test
 
       - name: Upload Allure results
