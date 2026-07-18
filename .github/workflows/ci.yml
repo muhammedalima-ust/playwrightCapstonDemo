@@ -1,29 +1,35 @@
-name: TripStack CI
+name: Final Capston
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main ,muhammed_final_capston ]
   push:
-    branches: [ main ]
+    branches: [ main ,muhammed_final_capston]
 
 env:
   CI: "true"
 
 jobs:
-  ui-tests:
-    name: UI Testing
+  playwright-1:
+    name: Playwright 1
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: PlaywrightTests
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - name: RUN UI
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright 1 tests
         env:
           MUHAMMED_BASEURL: ${{ secrets.MUHAMMED_BASEURL }}
           MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
@@ -31,22 +37,60 @@ jobs:
           MUHAMMED_VICTOR_CARD_EXPIRY: ${{ secrets.MUHAMMED_VICTOR_CARD_EXPIRY }}
           MUHAMMED_VICTOR_CARD_CVV: ${{ secrets.MUHAMMED_VICTOR_CARD_CVV }}
         run: npx playwright test
-      - name: Upload Playwright report
+
+      - name: Upload Playwright 1 report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-1
           path: PlaywrightTests/playwright-report
           retention-days: 14
 
-  api-core:
-    name: Rest Assured
+  playwright-2:
+    name: Playwright 2
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: PlaywrightTest2
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright 2 tests
+        env:
+          MUHAMMED_BASEURL: ${{ secrets.MUHAMMED_BASEURL }}
+          MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
+          MUHAMMED_VICTOR_CARD_NUMBER: ${{ secrets.MUHAMMED_VICTOR_CARD_NUMBER }}
+          MUHAMMED_VICTOR_CARD_EXPIRY: ${{ secrets.MUHAMMED_VICTOR_CARD_EXPIRY }}
+          MUHAMMED_VICTOR_CARD_CVV: ${{ secrets.MUHAMMED_VICTOR_CARD_CVV }}
+        run: npx playwright test
+
+      - name: Upload Playwright 2 report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-2
+          path: PlaywrightTest2/playwright-report
+          retention-days: 14
+
+  api:
+    name: API
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: apitesting
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -63,57 +107,19 @@ jobs:
         working-directory: apitesting
         run: chmod +x gradlew
 
-      - name: Run BaseTest + DB tests
+      - name: Run all API tests
         env:
           MUHAMMED_EMP_ID: ${{ secrets.MUHAMMED_EMP_ID }}
           MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
           MUHAMMED_DB_USERNAME: ${{ secrets.MUHAMMED_DB_USERNAME }}
           MUHAMMED_DB_PASSWORD: ${{ secrets.MUHAMMED_DB_PASSWORD }}
-        run: ./gradlew test --tests "com.apitesting.tests.BaseTest" --tests "com.apitesting.tests.DBTest"
-
-      - name: Upload Allure results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-core
-          path: apitesting/build/allure-results
-          retention-days: 14
-
-  api-security:
-    name: Security gate
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apitesting
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 22
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Generate Gradle Wrapper
-        working-directory: apitesting
-        run: gradle wrapper
-
-      - name: Grant execute permission
-        working-directory: apitesting
-        run: chmod +x gradlew
-
-      - name: Run security tests
-        env:
-          MUHAMMED_EMP_ID: ${{ secrets.MUHAMMED_EMP_ID }}
-          MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
           MUHAMMED_DAVE_PASSWORD: ${{ secrets.MUHAMMED_DAVE_PASSWORD }}
-        run: ./gradlew test --tests "com.apitesting.tests.SecurityNegativesTest"
+        run: ./gradlew test
 
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results-security
+          name: allure-results-api
           path: apitesting/build/allure-results
           retention-days: 14
