@@ -2,6 +2,8 @@ package com.apitesting.data.secrets;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+import java.util.Locale;
+
 public final class Secrets {
 
     private static final Dotenv dotenv = Dotenv.configure()
@@ -12,10 +14,14 @@ public final class Secrets {
     }
 
     public static String get(String key) {
-        String value = dotenv.get(key.toUpperCase());
+        String normalizedKey = key == null ? "" : key.trim();
 
-        if (value == null) {
-            value = dotenv.get(key);
+        String value = getFromEnvironment(normalizedKey);
+        if (value == null || value.isBlank()) {
+            value = dotenv.get(normalizedKey.toUpperCase(Locale.ROOT));
+        }
+        if (value == null || value.isBlank()) {
+            value = dotenv.get(normalizedKey);
         }
 
         if (value == null || value.isBlank()) {
@@ -23,5 +29,19 @@ public final class Secrets {
         }
 
         return value;
+    }
+
+    private static String getFromEnvironment(String key) {
+        if (key.isBlank()) {
+            return null;
+        }
+
+        String upperKey = key.toUpperCase(Locale.ROOT);
+        String value = System.getenv(upperKey);
+        if (value != null && !value.isBlank()) {
+            return value;
+        }
+
+        return System.getenv(key);
     }
 }
