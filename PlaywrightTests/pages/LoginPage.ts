@@ -1,5 +1,4 @@
 import { Page,TestInfo } from "@playwright/test";
-import { Locators } from "../locators/Locators";
 
 /**
 * This page contains all the locators and all the actions
@@ -11,10 +10,13 @@ export class LoginPage {
     * This page contains all the locators and all the actions
     */
     async login(email:string,password:string){
-        await this.page.getByLabel('email').pressSequentially(email);
-        await this.page.getByLabel('password').pressSequentially(password);
-        await Locators.INPUT_FORM(this.page).locator(Locators.SIGNIN(this.page)).click();
-    
+        await this.page.getByLabel('email').fill(email);
+        await this.page.getByLabel('password').fill(password);
+        await this.page.getByRole('button',{name:'Sign in'}).click();
+    }
+
+    async isSignInButtonVisible(){
+        return await this.page.getByRole('button',{name:'Sign in'}).isVisible();
     }
     
 }

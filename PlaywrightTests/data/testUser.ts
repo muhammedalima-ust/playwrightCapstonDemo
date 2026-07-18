@@ -1,6 +1,11 @@
 export const testUsers = {
     user:{
-        name: "Alice",
-        address: "My Address is i wont Tell You"
+        name: "Victor",
+        lastName: "John",
+        age: "22",
+        phone: 8109106289
     },
+    invalidUser:{
+        name: "Invalid"
+    }
 };

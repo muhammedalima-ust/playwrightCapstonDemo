@@ -23,7 +23,23 @@ public class Report {
     }
 
     public static void info(String key, Object value) {
-        log.info("[INFO]  {} : {}", key, value);
-        Allure.step("[INFO] : " + key + " = " + value);
+        String safeValue = isSensitive(key) ? "[SENSITIVEDATA]" : String.valueOf(value);
+
+        log.info("[INFO] {} : {}", key, safeValue);
+        Allure.step("[INFO] : " + key + " = " + safeValue);
+    }
+
+    private static boolean isSensitive(String key) {
+        if (key == null) {
+            return false;
+        }
+
+        String k = key.toLowerCase();
+
+        return k.contains("emp") ||
+                k.contains("token") ||
+                k.contains("secret") ||
+                k.contains("password") ||
+                k.contains("auth");
     }
 }

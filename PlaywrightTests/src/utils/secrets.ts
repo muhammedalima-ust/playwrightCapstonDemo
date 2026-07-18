@@ -11,7 +11,18 @@ export class secrets {
     if (!value) {
       throw new Error(`Missing secret: ${key}`);
     }
- 
     return value;
   }
+
+  static getuserPassword(key: string): string {
+    const value =
+      process.env[`MUHAMMED_${key.toLowerCase()}_PASSWORD`] ??
+      process.env[key];
+ 
+    if (!value) {
+      throw new Error(`Missing secret: ${key}`);
+    }
+    return value;
+  }
+
 }

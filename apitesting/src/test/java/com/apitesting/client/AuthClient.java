@@ -13,4 +13,18 @@ public class AuthClient {
                     .when()
                     .post("/auth/login");
         }
+
+        public Response me(String token) {
+        return given()
+                .spec(ApiSpecBuilders.authSpec(token))
+                .when()
+                .get("/auth/me");
+        }
+
+        public Response adminPing(String token) {
+                return given()
+                        .spec(ApiSpecBuilders.authSpec(token))
+                        .when()
+                        .get("/auth/admin-ping");
+        }
 }

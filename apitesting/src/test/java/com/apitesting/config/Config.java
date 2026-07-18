@@ -10,44 +10,31 @@ public class Config {
             .ignoreIfMissing()
             .load();
 
-    private static final String BASEURL =
-            dotenv.get("baseUrl", "http://localhost:8080");
+    private static final String APIBASEURL =
+            dotenv.get("APIBASEURL", "https://api.tripstack.doomple.com/");
 
-    private static final String APIURL =
-            dotenv.get("apiUrl", "http://localhost:8080");
+    private static final String DB_JDBC_URL =
+            dotenv.get("MUHAMMED_DB_JDBC_URL", "");
 
-    private static final String BROWSER =
-            dotenv.get("browser", "chrome");
+    private static final String DB_USERNAME =
+            dotenv.get("MUHAMMED_DB_USERNAME", "");
 
-    private static final String BROWSERSIZE =
-            dotenv.get("browsersize", "1440x900");
+    private static final String DB_PASSWORD =
+            dotenv.get("MUHAMMED_DB_PASSWORD", "");
 
-    private static final boolean HEADLESS =
-            Boolean.parseBoolean(
-                    dotenv.get("headless", "false")
-            );
-
-    public static String BASEURL_UI() {
-        return BASEURL;
+    public static String APIBASEURL() {
+        return APIBASEURL;
     }
 
-    public static String getPassword() {
-        return BASEURL;
+    public static String DB_JDBC_URL() {
+        return DB_JDBC_URL;
     }
 
-    public static String APIURL() {
-        return APIURL;
+    public static String DB_USERNAME() {
+        return DB_USERNAME;
     }
 
-    public static String BROWSER() {
-        return BROWSER;
-    }
-
-    public static String BROWSERSIZE() {
-        return BROWSERSIZE;
-    }
-
-    public static boolean HEADLESS() {
-        return HEADLESS;
+    public static String DB_PASSWORD() {
+        return DB_PASSWORD;
     }
 }

@@ -1,4 +1,4 @@
-import { test as diagnosticTest, expect } from "./LoggerFixture";
+import { test as diagnosticTest, expect, maskSensitiveData } from "./LoggerFixture";
 
 type Evidence = Record<string, unknown>;
 
@@ -26,11 +26,18 @@ export const test = diagnosticTest.extend<{
       }
 
       // Handle JSON object or string
+      const safeValue =
+        typeof value === "string"
+          ? value
+          : value && typeof value === "object"
+            ? maskSensitiveData(value as Record<string, unknown>)
+            : value;
+
       await testInfo.attach(`${name}.json`, {
         body:
-          typeof value === "string"
-            ? JSON.stringify(value)
-            : JSON.stringify(value, null, 2),
+          typeof safeValue === "string"
+            ? JSON.stringify(safeValue)
+            : JSON.stringify(safeValue, null, 2),
         contentType: "application/json",
       });
     }

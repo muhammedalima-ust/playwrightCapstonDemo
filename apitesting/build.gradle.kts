@@ -75,6 +75,7 @@ dependencies {
 
     // REST Assured
     testImplementation("io.rest-assured:rest-assured:$restassuredVersion")
+    testImplementation("io.rest-assured:json-schema-validator:$restassuredVersion")
 
     // Dotenv
     testImplementation("io.github.cdimascio:dotenv-java:$dotenvVersion")
@@ -89,7 +90,7 @@ tasks.test {
     description = "Run the Tests"
 
     useJUnitPlatform()
-    include("**/BaseTest.class")
+    include("**/*Test.class")
 
     maxParallelForks = 1
 
@@ -112,5 +113,5 @@ tasks.test {
 }
 
 tasks.test{
-    include("**/BaseTest.class");
+    include("**/*Test.class");
 }

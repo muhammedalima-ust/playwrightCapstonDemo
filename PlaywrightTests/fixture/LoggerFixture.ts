@@ -17,7 +17,7 @@ type DiagnosticFixtures = {
 
 const SENSITIVE_DATA_MASK = "[SENSITIVE_DATA_MASKED]";
 
-function maskSensitiveData(
+export function maskSensitiveData(
   data: Record<string, unknown>
 ): Record<string, unknown> {
   const sensitiveKeys = [
@@ -27,6 +27,10 @@ function maskSensitiveData(
     "apikey",
     "api_key",
     "authorization",
+    "cardnumber",
+    "cardexpiry",
+    "nameoncard",
+    "cvv",
   ];
 
   return Object.fromEntries(
@@ -48,7 +52,7 @@ export const test = base.extend<DiagnosticFixtures>({
     const diagnosticLog = logger.child({});
  
     diagnosticLog.info = ((message: string, meta: Record<string, unknown> = {}) => {
-                const maskedData =  Object.keys(meta).length !== 0 ? maskSensitiveData(meta) : null;
+          const maskedData =  Object.keys(meta).length !== 0 ? maskSensitiveData(meta) : undefined;
         
 
               const entry: LogEntry = {
@@ -97,11 +101,6 @@ export const test = base.extend<DiagnosticFixtures>({
       txtContent,
       "utf8"
     );
- 
-    await testInfo.attach("execution-log.txt", {
-      body: txtContent,
-      contentType: "text/plain",
-    });
   },
 });
  

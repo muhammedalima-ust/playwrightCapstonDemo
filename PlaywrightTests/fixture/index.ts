@@ -1,15 +1,15 @@
 import {test as base} from './EvidenceFixture'
-import { SearchFlow } from '../flow/SearchFlow'
+import { FullFlow } from '../flow/FullFlow'
 import { util } from '../src/utils/util';
 
 type Fixtures={
-    search:SearchFlow,
+    flow:FullFlow,
     util:util;
 }
 
 export const test = base.extend<Fixtures>({
-    search: async ({page,request},use,testInfo)=>{
-        await use (new SearchFlow(page,request,testInfo));
+    flow: async ({page},use,testInfo)=>{
+        await use (new FullFlow(page,testInfo));
     },
 
     util: async ({page},use)=>{

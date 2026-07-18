@@ -46,4 +46,5 @@ gradlew
 gradlew.bat
 .jar
 .env
+target/
 .target/

@@ -18,13 +18,8 @@ public class CustomerBuilder {
     }
 
     public Customer build(){
-        String email = name + "@shopkart.test";
-        String password = Secrets.get("SHOPKART_"+name + "_PASSWORD");
+        String email = name + "@tripstack.test";
+        String password = Secrets.get("MUHAMMED_"+name + "_PASSWORD");
         return new Customer(name,email,password);
-    }
-
-    public String loginAndGetToken() {
-        Customer customer = CustomerBuilder.aCustomer().named(name).build();
-        return new AuthClient().login(customer.email(), customer.password()).jsonPath().getString("token");
     }
 }
