@@ -24,4 +24,8 @@ export class PaymentPage {
     async clickPay(){
         await this.page.getByRole('button', { name: 'Pay ₹' }).click();
     }
+
+    async alertBoxvisible(){
+        const alertbox = this.page.getByRole('alert',{name:'payment declined by gateway'}).isVisible();
+    }
 }

@@ -14,7 +14,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: secrets.get("MUHAMMED_BASEURL"),
+    baseURL: secrets.get("BASEURL"),
 
      trace: 'on',
      screenshot: 'only-on-failure',

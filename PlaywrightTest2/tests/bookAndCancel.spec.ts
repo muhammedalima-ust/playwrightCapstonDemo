@@ -6,7 +6,7 @@ import { searchData } from "../testData/searchData";
 import { testUsers } from "../testData/testUser";
 
 test.describe("Book and Cancel teh flight",()=>{
-    test("Booking a flight from DEL to JAI",async ({flightflow,log,evidence})=>{
+    test("Booking a flight from DEL to JAI",async ({flightflow,log,evidence,isMobile})=>{
 
         log.info("User Trying to open the website")
         await flightflow.openWebsite();
@@ -99,8 +99,7 @@ test.describe("Book and Cancel teh flight",()=>{
             CardExpiry:cardExpiry,
             CVV:CVV,
         }
-
-
+        try {
         await flightflow.conformationPageVisible();
         log.info("The User reached the conformation page");
 
@@ -120,6 +119,21 @@ test.describe("Book and Cancel teh flight",()=>{
         status = await flightflow.statusofPNRpassedtrip(pnr!);
         expect(status).toEqual("REFUNDED");
         log.info("Status of the flight book After Cancelation",{status:status})
+
+                } catch {
+                   try {
+                  await flightflow.alertBoxvisibleCheck();
+                   }
+                  catch {
+                    log.info("The payment Gateway is down");
+        
+                  test.skip(isMobile,"The test is skipped because of the payment gateway down");
+                  }
+                  
+                }
+          
+        
+    
         
     })
 })

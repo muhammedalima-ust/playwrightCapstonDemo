@@ -109,5 +109,7 @@ export class flightFlow {
     async statusofPNRpassedtrip(pnr:string){
       return  await this.tripHistoryPage.verifyTripStatus(pnr);
     }
-
+    async alertBoxvisibleCheck(){
+        await this.paymentPage.alertBoxvisible();
+    }
 }

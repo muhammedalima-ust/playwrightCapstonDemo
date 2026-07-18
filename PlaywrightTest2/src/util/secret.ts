@@ -7,13 +7,13 @@ export class secrets {
   static get(key: string): string {
     const envKey = key.toUpperCase();
 
-    const ciValue = process.env[envKey];
+    const ciValue = process.env[ `MUHAMMED_${envKey}`];
 
     if (ciValue?.trim()) {
       return ciValue;
     }
 
-    const envValue = envConfig[envKey];
+    const envValue = envConfig[`MUHAMMED_${envKey}`];
 
     if (envValue?.trim()) {
       return envValue;
