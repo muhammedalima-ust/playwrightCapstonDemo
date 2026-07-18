@@ -1,4 +1,4 @@
-import { flightFlow } from '../flow/flightflow';
+import { flightFlow } from '../flow/flightFlow';
 import {test as base} from './EvidenceFixture'
 
 type Fixtures={
