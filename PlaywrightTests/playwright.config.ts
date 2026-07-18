@@ -6,6 +6,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 import dotenv from 'dotenv';
 import path from 'path';
+import { secrets } from './src/utils/secrets';
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
@@ -26,7 +27,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: process.env.MUHAMMED_BASEURL,
+    baseURL: secrets.get("MUHAMMED_BASEURL"),
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',

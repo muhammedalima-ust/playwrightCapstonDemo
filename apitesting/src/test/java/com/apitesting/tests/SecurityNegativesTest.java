@@ -63,8 +63,8 @@ public class SecurityNegativesTest {
     }
 
     @Test
-    @DisplayName("BOLA: another employee cannot read victor's PNR")
-    void bola_crossNamespaceReadBlocked() {
+    @DisplayName("BOLA USING PNR")
+    void BolaTestUsingPNR() {
         Customer user2 = CustomerBuilder.aCustomer().named(testUser.user2Name()).build();
         Response user2Login = authClient.login(user2.email(), user2.password());
         user2Login.then().statusCode(200);
@@ -73,12 +73,12 @@ public class SecurityNegativesTest {
         Response response = bookingClient.getBookingByPnr(user2Token, pnr);
         response.then().statusCode(403);
         assertEquals("CROSS_NAMESPACE", response.jsonPath().getString("error"));
-        Report.pass("BOLA correctly blocked with 403 CROSS_NAMESPACE");
+        Report.pass("BOLA TEST USING ID PASSED");
     }
 
     @Test
-    @DisplayName("Cross-namespace cancel is blocked")
-    void crossNamespace_cancelBlocked() {
+    @DisplayName("BOLA USING BOOKING ID")
+    void BolaTestUsingID() {
         Customer user2 = CustomerBuilder.aCustomer().named(testUser.user2Name()).build();
         Response user2Login = authClient.login(user2.email(), user2.password());
         String user2Token = user2Login.jsonPath().getString("token");
@@ -86,12 +86,12 @@ public class SecurityNegativesTest {
         Response response = bookingClient.cancelBooking(user2Token, bookingId);
         response.then().statusCode(403);
         assertEquals("CROSS_NAMESPACE", response.jsonPath().getString("error"));
-        Report.pass("Cross-namespace cancel correctly blocked");
+        Report.pass("BOLA TEST USING ID PASSED");
     }
 
     @Test
-    @DisplayName("Tampered token is rejected on /auth/me")
-    void tamperedToken_unauthorized() {
+    @DisplayName("Tampered Token will give 401")
+    void TamperedToken() {
         String tampered = victorToken.substring(0, victorToken.length() - 5) + "abcde";
         Response response = authClient.me(tampered);
         response.then().statusCode(401);
@@ -99,8 +99,8 @@ public class SecurityNegativesTest {
     }
 
     @Test
-    @DisplayName("Missing token is rejected on GET /bookings")
-    void noToken_unauthorized() {
+    @DisplayName("NULL TOKEN WILL GIVE 401")
+    void UnauthoriedBooking() {
         Response response = bookingClient.getBookings(null);
         
         response.then().statusCode(401);

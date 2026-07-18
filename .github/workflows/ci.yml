@@ -11,7 +11,7 @@ env:
 
 jobs:
   ui-tests:
-    name: Playwright UI (+ Resilience + Performance)
+    name: UI Testing
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,7 +23,7 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - name: Run UI + resilience + performance tests
+      - name: RUN UI
         env:
           MUHAMMED_BASEURL: ${{ secrets.MUHAMMED_BASEURL }}
           MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
@@ -40,7 +40,7 @@ jobs:
           retention-days: 14
 
   api-core:
-    name: RestAssured/JDBC — core + DB
+    name: Rest Assured
     runs-on: ubuntu-latest
     defaults:
       run:

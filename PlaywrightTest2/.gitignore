@@ -46,6 +46,6 @@ temp/
 # Cache
 .cache/
 
-secrets.local.properties
-
 test-results/
+
+secrets.local.properties

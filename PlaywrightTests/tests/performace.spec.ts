@@ -4,13 +4,11 @@ import { util } from '../src/utils/util';
 import { secrets } from '../src/utils/secrets';
 import { testTripData } from '../data/testTripData';
 
-// Baseline established on a clean local run against the live site.
-// Re-capture this after your first real measurement and adjust.
 const BASELINE_MS = 2500;
-const REGRESSION_MULTIPLIER = 1.5; // fail if >50% slower than baseline
+const REGRESSION_MULTIPLIER = 1.5;
 const THRESHOLD_MS = BASELINE_MS * REGRESSION_MULTIPLIER;
 
-test.describe("Performance — Results listing page (empId 1022)", () => {
+test.describe("Performance", () => {
   test("bus results page loads within threshold", async ({ flow, log, evidence, page }) => {
     await flow.start();
     await flow.clickLogin();
@@ -29,14 +27,12 @@ test.describe("Performance — Results listing page (empId 1022)", () => {
         Number(testTripData.trip1.dateAdder)
       );
 
-      // Wait for the results page to be meaningfully rendered — first bus card visible.
       await page.getByRole('checkbox', { name: 'A/C Sleeper' }).waitFor({ state: 'visible' });
 
       const duration = Date.now() - start;
       samples.push(duration);
       log.info(`Results page load attempt ${i + 1}`, { durationMs: duration });
 
-      // Go back to a fresh state for the next sample.
       await flow.start();
     }
 
@@ -47,8 +43,6 @@ test.describe("Performance — Results listing page (empId 1022)", () => {
     evidence["performance-samples"] = { samples, p95, baselineMs: BASELINE_MS, thresholdMs: THRESHOLD_MS };
     log.info("Performance gate result", { p95, baselineMs: BASELINE_MS, thresholdMs: THRESHOLD_MS });
 
-    // Use trace/OpenTelemetry data (network tab / trace viewer) to explain the regression
-    // if this assertion fails — the director's slow-path flag targets this exact page.
     expect(p95, `p95=${p95}ms exceeds threshold=${THRESHOLD_MS}ms (baseline=${BASELINE_MS}ms)`)
       .toBeLessThanOrEqual(THRESHOLD_MS);
   });

@@ -17,7 +17,19 @@ export class BusListPage{
     }
 
      async selectSeat(){
-        await xp.AVAIALBLESLEEPERSEAT(this.page).nth(1).click();
+        const upper = xp.AVAIALBLESLEEPERSEATUPPER(this.page).first();
+        const lower = xp.AVAIALBLESLEEPERSEATLOWER(this.page).first();
+
+        try {
+            await upper.waitFor({ timeout: 800 });
+            return await upper.click();
+        } catch {}
+
+        try {
+            await lower.waitFor({ timeout: 800 });
+            return await lower.click();
+        } catch {throw new Error('No seat available');}
+
     }
     async clickContinue(){
        await this.page.getByRole('button', { name: 'Continue to passenger details' }).click();

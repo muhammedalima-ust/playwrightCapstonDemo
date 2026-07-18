@@ -21,7 +21,9 @@ export class HomePage {
         await this.page.getByRole('link', { name: 'Log in' }).click();
     }
 
-     /**
-    * This method is used to add from
-    */
+    async gotoTrip(){
+        await this.page.getByRole('link', { name: 'My Trips' }).click();
+    }
+
+    
 }

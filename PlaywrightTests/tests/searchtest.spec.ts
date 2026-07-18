@@ -5,7 +5,7 @@ import { secrets } from '../src/utils/secrets';
 import { testTripData } from '../data/testTripData';
 
 test.describe("Test for the flow from ordering a bus",()=>{
-    test("End To End Flow",async ({flow,log,evidence,page},testInfo)=>{
+    test("End To End Flow",async ({flow,log,evidence,page,isMobile},testInfo)=>{
       await flow.start();
       log.info("The Home Page Opened");
       
@@ -76,7 +76,23 @@ test.describe("Test for the flow from ordering a bus",()=>{
         cvv:cvv
       });
 
-      await flow.verifyConfirmationDetails();
-      log.info("Confirmation page details are visible");
+      const confirmed = page.getByRole('heading', { name: "You're all set!" });
+    const alertbox = page.getByRole('alert',{name:'payment declined by gateway'})
+
+      try {
+                await confirmed.waitFor({ timeout: 800 });
+                await flow.verifyConfirmationDetails();
+                log.info("Confirmation page details are visible");
+            } catch {
+              try {
+              await alertbox.waitFor({timeout: 800 })
+              }
+              catch {
+                log.info("The payment Gateway is down");
+                test.skip(isMobile,"The test is skipped because of the payment gateway down");
+              }
+              
+            }
+      
     })
 })

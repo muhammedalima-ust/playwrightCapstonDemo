@@ -10,17 +10,26 @@ public class Config {
             .ignoreIfMissing()
             .load();
 
+    private static String getValueFromEnvOrDotenv(String key, String defaultValue) {
+        String ciValue = System.getenv(key);
+        if (ciValue != null && !ciValue.trim().isEmpty()) {
+            return ciValue;
+        }
+
+        return dotenv.get(key, defaultValue);
+    }
+
     private static final String APIBASEURL =
-            dotenv.get("APIBASEURL", "https://api.tripstack.doomple.com/");
+            getValueFromEnvOrDotenv("APIBASEURL", "https://api.tripstack.doomple.com/");
 
     private static final String DB_JDBC_URL =
-            dotenv.get("MUHAMMED_DB_JDBC_URL", "");
+            getValueFromEnvOrDotenv("MUHAMMED_DB_JDBC_URL", "");
 
     private static final String DB_USERNAME =
-            dotenv.get("MUHAMMED_DB_USERNAME", "");
+            getValueFromEnvOrDotenv("MUHAMMED_DB_USERNAME", "");
 
     private static final String DB_PASSWORD =
-            dotenv.get("MUHAMMED_DB_PASSWORD", "");
+            getValueFromEnvOrDotenv("MUHAMMED_DB_PASSWORD", "");
 
     public static String APIBASEURL() {
         return APIBASEURL;
