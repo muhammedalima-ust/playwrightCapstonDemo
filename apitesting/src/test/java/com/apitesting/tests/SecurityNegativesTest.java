@@ -54,7 +54,7 @@ public class SecurityNegativesTest {
         bookingClient.payBooking(victorToken, bookingId);
         Response confirm = bookingClient.confirmBooking(victorToken, bookingId);
         pnr = confirm.jsonPath().getString("pnr");
-        Report.pass("Booking confirmed for security-test setup, pnr=" + pnr);
+        Report.pass("Booking confirmed for security-test setup");
     }
 
     @AfterEach

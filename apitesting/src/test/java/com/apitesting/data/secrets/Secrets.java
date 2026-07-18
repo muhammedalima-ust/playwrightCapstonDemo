@@ -8,6 +8,7 @@ public final class Secrets {
 
     private static final Dotenv dotenv = Dotenv.configure()
             .ignoreIfMissing()
+            .ignoreIfMalformed()
             .load();
 
     private Secrets() {

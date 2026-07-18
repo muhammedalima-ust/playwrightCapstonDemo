@@ -8,6 +8,7 @@ public class Config {
 
     private static final Dotenv dotenv = Dotenv.configure()
             .ignoreIfMissing()
+            .ignoreIfMalformed()
             .load();
 
     private static String getValueFromEnvOrDotenv(String key, String defaultValue) {
@@ -16,11 +17,16 @@ public class Config {
             return ciValue;
         }
 
-        return dotenv.get(key, defaultValue);
+        String dotenvValue = dotenv.get(key);
+        if (dotenvValue != null && !dotenvValue.trim().isEmpty()) {
+            return dotenvValue;
+        }
+
+        return defaultValue == null ? "" : defaultValue;
     }
 
     private static final String APIBASEURL =
-            getValueFromEnvOrDotenv("APIBASEURL", "https://api.tripstack.doomple.com/");
+            getValueFromEnvOrDotenv("MUHAMMED_APIBASEURL", "https://api.tripstack.doomple.com/");
 
     private static final String DB_JDBC_URL =
             getValueFromEnvOrDotenv("MUHAMMED_DB_JDBC_URL", "");
