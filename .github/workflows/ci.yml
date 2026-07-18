@@ -117,10 +117,3 @@ jobs:
           name: allure-results-security
           path: apitesting/build/allure-results
           retention-days: 14
-
-  merge-gate:
-    name: Merge gate (all must pass)
-    needs: [ ui-tests, api-core, api-security ]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "All gates green — safe to merge."
