@@ -107,8 +107,27 @@ jobs:
         working-directory: apitesting
         run: chmod +x gradlew
 
+      - name: Diagnostic - raw curl to auth endpoint
+        env:
+          MUHAMMED_APIBASEURL: ${{ secrets.MUHAMMED_APIBASEURL }}
+          MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
+        run: |
+          BASEURL="${MUHAMMED_APIBASEURL:-https://api.tripstack.doomple.com/}"
+          PASSWORD="${MUHAMMED_VICTOR_PASSWORD:-Password@123}"
+          # Trim a trailing slash so we don't end up with a double slash
+          BASEURL="${BASEURL%/}"
+          echo "Resolved base URL: $BASEURL"
+          echo "Password length being sent: ${#PASSWORD}"
+          echo "---- raw response below ----"
+          curl -i -sS -X POST "$BASEURL/api/auth/login" \
+            -H "Content-Type: application/json" \
+            -d "{\"email\":\"victor@tripstack.test\",\"password\":\"$PASSWORD\"}"
+          echo
+          echo "---- end raw response ----"
+
       - name: Run all API tests
         env:
+          MUHAMMED_APIBASEURL: ${{ secrets.MUHAMMED_APIBASEURL }}
           MUHAMMED_EMP_ID: ${{ secrets.MUHAMMED_EMP_ID }}
           MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
           MUHAMMED_DB_USERNAME: ${{ secrets.MUHAMMED_DB_USERNAME }}
