@@ -16,7 +16,7 @@ export class secrets {
 
   static getuserPassword(key: string): string {
     const value =
-      process.env[`MUHAMMED_${key.toLowerCase()}_PASSWORD`] ??
+      process.env[`MUHAMMED_${key.toUpperCase()}_PASSWORD`] ??
       process.env[key];
  
     if (!value) {
