@@ -37,7 +37,7 @@ test.describe('Negative tests for bus booking flow', () => {
 
     await flow.login('valid.user@example.com', '');
     log.info('Attempted login with empty password', {
-      username: 'valid.user@example.com',
+      username: util.emailName(testUsers.invalidUser.name),
       password: ''
     });
 

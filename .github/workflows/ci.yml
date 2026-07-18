@@ -11,7 +11,7 @@ env:
 
 jobs:
   ui-tests:
-    name: Playwright UI
+    name: Playwright UI (+ Resilience + Performance)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -51,6 +51,18 @@ jobs:
         with:
           distribution: temurin
           java-version: 22
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Generate Gradle Wrapper
+        working-directory: apitesting
+        run: gradle wrapper
+
+      - name: Grant execute permission
+        working-directory: apitesting
+        run: chmod +x gradlew
+
       - name: Run BaseTest + DB tests
         env:
           MUHAMMED_EMP_ID: ${{ secrets.MUHAMMED_EMP_ID }}
@@ -58,6 +70,7 @@ jobs:
           MUHAMMED_DB_USERNAME: ${{ secrets.MUHAMMED_DB_USERNAME }}
           MUHAMMED_DB_PASSWORD: ${{ secrets.MUHAMMED_DB_PASSWORD }}
         run: ./gradlew test --tests "com.apitesting.tests.BaseTest" --tests "com.apitesting.tests.DBTest"
+
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
@@ -78,12 +91,25 @@ jobs:
         with:
           distribution: temurin
           java-version: 22
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Generate Gradle Wrapper
+        working-directory: apitesting
+        run: gradle wrapper
+
+      - name: Grant execute permission
+        working-directory: apitesting
+        run: chmod +x gradlew
+
       - name: Run security tests
         env:
           MUHAMMED_EMP_ID: ${{ secrets.MUHAMMED_EMP_ID }}
           MUHAMMED_VICTOR_PASSWORD: ${{ secrets.MUHAMMED_VICTOR_PASSWORD }}
-          MUHAMMED_BOB_PASSWORD: ${{ secrets.MUHAMMED_DAVE_PASSWORD }}
+          MUHAMMED_DAVE_PASSWORD: ${{ secrets.MUHAMMED_DAVE_PASSWORD }}
         run: ./gradlew test --tests "com.apitesting.tests.SecurityNegativesTest"
+
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
