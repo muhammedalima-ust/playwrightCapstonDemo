@@ -14,35 +14,20 @@ public final class Secrets {
     private Secrets() {
     }
 
+
     public static String get(String key) {
-        String normalizedKey = key == null ? "" : key.trim();
+        String envKey = key == null ? "" : key.trim().toUpperCase(Locale.ROOT);
 
-        String value = getFromEnvironment(normalizedKey);
-        if (value == null || value.isBlank()) {
-            value = dotenv.get(normalizedKey.toUpperCase(Locale.ROOT));
-        }
-        if (value == null || value.isBlank()) {
-            value = dotenv.get(normalizedKey);
+        String ciValue = System.getenv(envKey);
+        if (ciValue != null && !ciValue.isBlank()) {
+            return ciValue;
         }
 
-        if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Missing secret: " + key);
+        String envValue = dotenv.get(envKey);
+        if (envValue != null && !envValue.isBlank()) {
+            return envValue;
         }
 
-        return value;
-    }
-
-    private static String getFromEnvironment(String key) {
-        if (key.isBlank()) {
-            return null;
-        }
-
-        String upperKey = key.toUpperCase(Locale.ROOT);
-        String value = System.getenv(upperKey);
-        if (value != null && !value.isBlank()) {
-            return value;
-        }
-
-        return System.getenv(key);
+        return "";
     }
 }

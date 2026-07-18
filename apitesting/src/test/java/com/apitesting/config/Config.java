@@ -11,14 +11,15 @@ public class Config {
             .ignoreIfMalformed()
             .load();
 
+
     private static String getValueFromEnvOrDotenv(String key, String defaultValue) {
         String ciValue = System.getenv(key);
-        if (ciValue != null && !ciValue.trim().isEmpty()) {
+        if (ciValue != null && !ciValue.isBlank()) {
             return ciValue;
         }
 
         String dotenvValue = dotenv.get(key);
-        if (dotenvValue != null && !dotenvValue.trim().isEmpty()) {
+        if (dotenvValue != null && !dotenvValue.isBlank()) {
             return dotenvValue;
         }
 
