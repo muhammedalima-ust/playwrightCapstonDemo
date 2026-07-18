@@ -53,10 +53,10 @@ test.describe("Test for the flow from ordering a bus",()=>{
         phoneNumber: String(testUsers.user.phone)
       });
 
-      const nameOnCard = secrets.get(`MUHAMMED_${testUsers.user.name}_CARD_NAME`);
-      const cardNumber = secrets.get(`MUHAMMED_${testUsers.user.name}_CARD_NUMBER`);
-      const cardexpiry = secrets.get(`MUHAMMED_${testUsers.user.name}_CARD_EXPIRY`);
-      const cvv = secrets.get(`MUHAMMED_${testUsers.user.name}_CARD_CVV`);
+      const nameOnCard = secrets.get(`MUHAMMED_${testUsers.user.name.toUpperCase()}_CARD_NAME`);
+      const cardNumber = secrets.get(`MUHAMMED_${testUsers.user.name.toUpperCase()}_CARD_NUMBER`);
+      const cardexpiry = secrets.get(`MUHAMMED_${testUsers.user.name.toUpperCase()}_CARD_EXPIRY`);
+      const cvv = secrets.get(`MUHAMMED_${testUsers.user.name.toUpperCase()}_CARD_CVV`);
       await flow.addPaymentDetails(
         nameOnCard,
         cardNumber,

@@ -23,9 +23,9 @@ test.describe("Resilience — director-injected payment fault (empId 1022)", () 
 
     await flow.addPaymentDetails(
       testUsers.user.name,
-      secrets.get(`MUHAMMED_${testUsers.user.name}_CARD_NUMBER`),
-      secrets.get(`MUHAMMED_${testUsers.user.name}_CARD_EXPIRY`),
-      secrets.get(`MUHAMMED_${testUsers.user.name}_CARD_CVV`)
+      secrets.get(`MUHAMMED_${testUsers.user.name.toUpperCase()}_CARD_NUMBER`),
+      secrets.get(`MUHAMMED_${testUsers.user.name.toUpperCase()}_CARD_EXPIRY`),
+      secrets.get(`MUHAMMED_${testUsers.user.name.toUpperCase()}_CARD_CVV`)
     );
     log.info("Submitted payment — checking for fault behaviour");
 
